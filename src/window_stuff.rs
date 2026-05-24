@@ -4,13 +4,17 @@ use crate::draw_words;
 
 pub fn begin_game_screen(window: &Window) {
     window.clear();
+    
     window.mvprintw(10, 10, "Welcome to my typing game!");
     window.mvprintw(20, 10, "press any key to begin.");
+    
     window.refresh();
 }
 
 pub fn game_screen(window: &Window, falling_words: &Vec<FallingWord>,
                    type_string: &String, player_health: &i32, player_score: &i32) {
+
+    window.clear();
 
     window.printw("esc - quit game. enter - submit / refresh ur typing\n");
     window.printw("Type the falling words before they reach the bottom.");
@@ -25,8 +29,10 @@ pub fn game_screen(window: &Window, falling_words: &Vec<FallingWord>,
 
 pub fn game_over_screen(window: &Window, score: &i32) {
     window.clear();
+    
     window.mvprintw(21, 20, format!("final score: {}", score));
     window.mvprintw(20, 20, "GAME OVER");
     window.mvprintw(23, 20, "enter - restart. esc - quit.");
+    
     window.refresh();
 }
