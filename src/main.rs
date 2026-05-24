@@ -1,80 +1,14 @@
-use pancurses::{initscr, noecho, endwin, Input, Window, start_color, init_pair};
+use pancurses::{initscr, noecho, endwin, Input, start_color, init_pair};
 use std::collections::HashMap;
 use std::thread::{sleep};
 use std::time::Duration;
-use rand::Rng;
 
 mod window_stuff;
-
-struct FallingWord {
-    ypos: u8,
-    xpos: u8,
-    word: String
-}
-
-impl FallingWord {
-    fn new(given_ypos: u8, given_xpos: u8, given_word: String) -> FallingWord {
-       FallingWord {ypos: given_ypos,
-                    xpos: given_xpos,
-                    word: given_word}
-    }
-}
-
-fn spawn_word(given_fw: &mut Vec<FallingWord>, words_map: &HashMap<usize, Vec<&str>>) {
-    let nxpos = rand::thread_rng().gen_range(0..50);
-    let wrd_ind = rand::thread_rng().gen_range(0..4);
-
-    let new_word = match wrd_ind {
-        0 => String::from(words_map.get(&3).unwrap()[rand::thread_rng().gen_range(0..words_map.get(&3).unwrap().len())]),
-        1 => String::from(words_map.get(&4).unwrap()[rand::thread_rng().gen_range(0..words_map.get(&4).unwrap().len())]),
-        2 => String::from(words_map.get(&5).unwrap()[rand::thread_rng().gen_range(0..words_map.get(&5).unwrap().len())]),
-        3 => String::from(words_map.get(&3).unwrap()[rand::thread_rng().gen_range(0..words_map.get(&3).unwrap().len())]),
-        _ => String::from("error?")
-    };
-
-    given_fw.push(FallingWord::new(0, nxpos, new_word));
-}
-
-fn draw_words(window: &Window, given_fw: &Vec<FallingWord>, type_string: &String) {
-    for fw in given_fw {
-        let mut matching: String = String::from("");
-
-        //check how much match we have with type_string
-        for chr_ind in 0..fw.word.len() {
-            if chr_ind >= type_string.len() {
-                break;
-            }
-            
-            if fw.word.chars().nth(chr_ind) == type_string.chars().nth(chr_ind) {
-                matching.push(fw.word.chars().nth(chr_ind).unwrap_or(' '));
-            }
-            else {
-                break;
-            }
-        }
-
-        window.mv(fw.ypos as i32, fw.xpos as i32);
-        
-        window.attron(pancurses::ColorPair(1));
-        let mut m_index = 0;
-        while m_index < matching.len() {
-            window.printw(matching.chars().nth(m_index).unwrap_or(' ').to_string());
-            m_index += 1;
-        }
-        window.attroff(pancurses::ColorPair(1));
-
-        while m_index < fw.word.len() {
-            window.printw(fw.word.chars().nth(m_index).unwrap_or(' ').to_string());
-            m_index += 1;
-        }
-    }
-}
-
-fn move_words(given_fw: &mut Vec<FallingWord>) {
-    for fw in given_fw {
-        fw.ypos += 1;
-    }
-}
+use window_stuff::game_screen;
+mod word_stuff;
+mod types;
+use types::FallingWord;
+use word_stuff::{spawn_word, draw_words, move_words};
 
 fn main() {
     //read in the english words
@@ -130,14 +64,8 @@ fn main() {
         }
 
         else {
-            //draw some stuffs
-            window.printw("esc - quit game. enter - submit / refresh ur typing\n");
-            window.printw("Type the falling words before they reach the bottom.");
-            window.mvprintw(25, 0, "-".repeat(25));
-            window.mvprintw(28, 0, format!("Health: {player_health}"));
-            window.mvprintw(28, 20, format!("Score: {player_score}"));
-            draw_words(&window, &falling_words, &type_string);
-            window.mvprintw(30, 0, &type_string);
+
+            game_screen(&window, &falling_words, &type_string, &player_health, &player_score);
 
             window.refresh();
 
