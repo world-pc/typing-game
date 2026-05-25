@@ -10,11 +10,15 @@ mod types;
 use types::FallingWord;
 use word_stuff::{spawn_word, draw_words, move_words};
 
+mod user_input;
+use user_input::game_input;
+
 fn main() {
     //read in the english words
     let words: Vec<&str> = include_str!("../assets/words.txt")
         .lines().collect();
 
+    //create associative array linking word length to vector of words with that length
     let mut words_map: HashMap<usize, Vec<&str>> = HashMap::new();
     for word in &words {
         words_map.entry(word.len()).or_insert_with(Vec::new).push(word);
@@ -30,12 +34,10 @@ fn main() {
     start_color();
     init_pair(1, pancurses::COLOR_YELLOW, pancurses::COLOR_BLACK);
 
+    //stuff to keep track of for the game (score, health, etc.)
     let mut frame_count: u32 = 1;
-
     let mut player_health = 100;
-    
     let mut player_score = 0;
-
     let mut type_string = String::from("");
 
     window_stuff::begin_game_screen(&window);
@@ -89,26 +91,8 @@ fn main() {
             }
 
             //handle user input
-            match window.getch() {
-                Some(Input::Character(c)) if c.is_alphabetic() => {
-                    type_string.push(c);
-                },
-                Some(Input::KeyBackspace) | Some(Input::Character('\x7f')) => {
-                    type_string.pop();
-                },
-                Some(Input::Character('\n')) => {
-                    for fw_ind in (0 .. falling_words.len()).rev() {
-                        if falling_words[fw_ind].word == type_string {
-                            falling_words.remove(fw_ind);
-                            player_score += 100;
-                        }
-                    }
-
-                    type_string = String::from("");
-                },
-                Some(Input::Character('\x1b')) => break,
-                _ => {}
-            }
+            game_input(&window, &mut type_string, 
+                       &mut falling_words, &mut player_score);
 
             frame_count += 1;
         }
