@@ -5,13 +5,25 @@ use std::time::Duration;
 
 mod window_stuff;
 use window_stuff::game_screen;
+
 mod word_stuff;
+use word_stuff::{spawn_word, draw_words, move_words};
+
 mod types;
 use types::FallingWord;
-use word_stuff::{spawn_word, draw_words, move_words};
 
 mod user_input;
 use user_input::game_input;
+
+fn reset_game_vars(player_health: &mut i32, player_score: &mut i32,
+                   type_string: &mut String, frame_count: &mut u32,
+                   falling_words: &mut Vec<FallingWord>) {
+    *player_health = 100;
+    *player_score = 0;
+    *type_string = String::from("");
+    *frame_count = 1;
+    falling_words.clear();
+}
 
 fn main() {
     //read in the english words
@@ -55,11 +67,9 @@ fn main() {
             match window.getch() {
                 Some(Input::Character('\x1b')) => break,
                 Some(Input::Character('\n')) => {
-                    player_health = 100;
-                    player_score = 0;
-                    type_string = String::from("");
-                    frame_count = 1;
-                    falling_words.clear();
+                    reset_game_vars(&mut player_health, &mut player_score, 
+                                    &mut type_string, &mut frame_count,
+                                    &mut falling_words);
                 },
                 _ => {}
             }
@@ -91,8 +101,9 @@ fn main() {
             }
 
             //handle user input
-            game_input(&window, &mut type_string, 
-                       &mut falling_words, &mut player_score);
+            let usrin: i32 = game_input(&window, &mut type_string, 
+                                        &mut falling_words, &mut player_score);
+            if usrin == 1 {break;}
 
             frame_count += 1;
         }
