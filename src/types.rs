@@ -11,3 +11,6 @@ impl FallingWord {
                     word: given_word}
     }
 }
+
+pub struct GameState {
+}
