@@ -2,6 +2,7 @@ use pancurses::Window;
 use crate::types::{FallingWord, GameState};
 use crate::draw_words;
 use rand::thread_rng;
+use rand::Rng;
 use rand::seq::SliceRandom;
 use std::thread::{sleep};
 use std::time::Duration;
@@ -16,6 +17,10 @@ pub fn title_screen(window: &Window) {
 }
 
 pub fn transition(window: &Window) {
+
+    //possble characters to print
+    let possible_chrs: [&str; 6] = ["$", "@", "~", "?", "!", "*"];
+    let chosen_chr: &str = possible_chrs[rand::thread_rng().gen_range(0..5)];
 
     //create an array [1, 2, 3, ... , 50] that we'll shuffle
     //to create randomized layouts for each row.
@@ -34,7 +39,7 @@ pub fn transition(window: &Window) {
 
     for col in 0..50 {
         for row in 0..25 {
-            window.mvprintw(row+1, row_layouts[row as usize][col as usize], "$");
+            window.mvprintw(row+1, row_layouts[row as usize][col as usize], chosen_chr);
         }
 
         window.refresh();
