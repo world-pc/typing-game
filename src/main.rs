@@ -42,6 +42,8 @@ fn main() {
     window_stuff::title_screen(&window);
     window.getch();
 
+    window_stuff::animation(&window);
+
     window.nodelay(true);
 
     loop {

@@ -1,6 +1,10 @@
 use pancurses::Window;
 use crate::types::{FallingWord, GameState};
 use crate::draw_words;
+use rand::thread_rng;
+use rand::seq::SliceRandom;
+use std::thread::{sleep};
+use std::time::Duration;
 
 pub fn title_screen(window: &Window) {
     window.clear();
@@ -9,6 +13,33 @@ pub fn title_screen(window: &Window) {
     window.mvprintw(20, 10, "press any key to begin.");
     
     window.refresh();
+}
+
+pub fn animation(window: &Window) {
+
+    //create an array [1, 2, 3, ... , 50] that we'll shuffle
+    //to create randomized layouts for each row.
+
+    let mut x_layout: [i32; 50] = [0; 50];
+    for i in 0..x_layout.len() {
+        x_layout[i] = (i+1) as i32;
+    }
+
+    //row_layouts stores the spawn patterns for rows 1->25
+    let mut row_layouts: Vec<Vec<i32>> = (0..25)
+        .map(|_| {
+            x_layout.shuffle(&mut thread_rng());
+            x_layout.to_vec()
+        }).collect();
+
+    for col in 0..50 {
+        for row in 0..25 {
+            window.mvprintw(row+1, row_layouts[row as usize][col as usize], "$");
+        }
+
+        window.refresh();
+        sleep(Duration::from_millis(64)); // ~15fps
+    }
 }
 
 pub fn game_screen(window: &Window, game_state: &GameState) {
