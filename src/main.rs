@@ -13,7 +13,7 @@ mod types;
 use types::FallingWord;
 
 mod user_input;
-use user_input::game_input;
+use user_input::{game_input, game_over_input};
 
 fn reset_game_vars(player_health: &mut i32, player_score: &mut i32,
                    type_string: &mut String, frame_count: &mut u32,

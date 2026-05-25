@@ -26,3 +26,12 @@ pub fn game_input(window: &Window, type_string: &mut String,
 
     return 0;
 }
+
+pub fn game_over_input(window: &Window) -> i32 {
+    match window.getch() {
+        Some(Input::Character('\x1b')) => return 1,
+        _ => {}
+    }
+
+    return 0;
+}
