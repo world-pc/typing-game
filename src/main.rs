@@ -39,7 +39,7 @@ fn main() {
     //stuff to keep track of for the game (score, health, etc.)
     let mut game_state = GameState::new();
 
-    window_stuff::begin_game_screen(&window);
+    window_stuff::title_screen(&window);
     window.getch();
 
     window.nodelay(true);

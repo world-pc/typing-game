@@ -2,7 +2,7 @@ use pancurses::Window;
 use crate::types::{FallingWord, GameState};
 use crate::draw_words;
 
-pub fn begin_game_screen(window: &Window) {
+pub fn title_screen(window: &Window) {
     window.clear();
     
     window.mvprintw(10, 10, "Welcome to my typing game!");
