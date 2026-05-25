@@ -56,7 +56,7 @@ pub fn game_screen(window: &Window, game_state: &GameState) {
 
     window.printw("esc - quit game. enter - submit / refresh ur typing\n");
     window.printw("Type the falling words before they reach the bottom.");
-    window.mvprintw(25, 0, "-".repeat(25));
+    window.mvprintw(25, 0, "-".repeat(50));
     window.mvprintw(28, 0, format!("Health: {player_health}"));
     window.mvprintw(28, 20, format!("Score: {score}"));
     draw_words(window, game_state);
