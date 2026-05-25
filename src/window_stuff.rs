@@ -15,7 +15,7 @@ pub fn title_screen(window: &Window) {
     window.refresh();
 }
 
-pub fn animation(window: &Window) {
+pub fn transition(window: &Window) {
 
     //create an array [1, 2, 3, ... , 50] that we'll shuffle
     //to create randomized layouts for each row.
