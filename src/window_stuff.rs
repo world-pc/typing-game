@@ -1,5 +1,5 @@
 use pancurses::Window;
-use crate::types::FallingWord;
+use crate::types::{FallingWord, GameState};
 use crate::draw_words;
 
 pub fn begin_game_screen(window: &Window) {
@@ -11,26 +11,28 @@ pub fn begin_game_screen(window: &Window) {
     window.refresh();
 }
 
-pub fn game_screen(window: &Window, falling_words: &Vec<FallingWord>,
-                   type_string: &String, player_health: &i32, player_score: &i32) {
+pub fn game_screen(window: &Window, game_state: &GameState) {
 
     window.clear();
+
+    let player_health = game_state.player_health;
+    let score = game_state.player_score;
 
     window.printw("esc - quit game. enter - submit / refresh ur typing\n");
     window.printw("Type the falling words before they reach the bottom.");
     window.mvprintw(25, 0, "-".repeat(25));
     window.mvprintw(28, 0, format!("Health: {player_health}"));
-    window.mvprintw(28, 20, format!("Score: {player_score}"));
-    draw_words(&window, &falling_words, &type_string);
-    window.mvprintw(30, 0, &type_string);
+    window.mvprintw(28, 20, format!("Score: {score}"));
+    draw_words(window, game_state);
+    window.mvprintw(30, 0, &game_state.type_string);
 
     window.refresh();
 }
 
-pub fn game_over_screen(window: &Window, score: &i32) {
+pub fn game_over_screen(window: &Window, game_state: &GameState) {
     window.clear();
     
-    window.mvprintw(21, 20, format!("final score: {}", score));
+    window.mvprintw(21, 20, format!("final score: {}", game_state.player_score));
     window.mvprintw(20, 20, "GAME OVER");
     window.mvprintw(23, 20, "enter - restart. esc - quit.");
     

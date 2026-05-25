@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 use rand::Rng;
 
-use crate::types::FallingWord;
+use crate::types::{FallingWord, GameState};
 use pancurses::Window;
 
-pub fn spawn_word(given_fw: &mut Vec<FallingWord>, words_map: &HashMap<usize, Vec<&str>>) {
+pub fn spawn_word(game_state: &mut GameState, words_map: &HashMap<usize, Vec<&str>>) {
     let nxpos = rand::thread_rng().gen_range(0..50);
     let wrd_ind = rand::thread_rng().gen_range(0..4);
 
@@ -16,20 +16,20 @@ pub fn spawn_word(given_fw: &mut Vec<FallingWord>, words_map: &HashMap<usize, Ve
         _ => String::from("error?")
     };
 
-    given_fw.push(FallingWord::new(0, nxpos, new_word));
+    game_state.falling_words.push(FallingWord::new(0, nxpos, new_word));
 }
 
-pub fn draw_words(window: &Window, given_fw: &Vec<FallingWord>, type_string: &String) {
-    for fw in given_fw {
+pub fn draw_words(window: &Window, game_state: &GameState) {
+    for fw in &game_state.falling_words {
         let mut matching: String = String::from("");
 
         //check how much match we have with type_string
         for chr_ind in 0..fw.word.len() {
-            if chr_ind >= type_string.len() {
+            if chr_ind >= game_state.type_string.len() {
                 break;
             }
             
-            if fw.word.chars().nth(chr_ind) == type_string.chars().nth(chr_ind) {
+            if fw.word.chars().nth(chr_ind) == game_state.type_string.chars().nth(chr_ind) {
                 matching.push(fw.word.chars().nth(chr_ind).unwrap_or(' '));
             }
             else {
@@ -54,8 +54,8 @@ pub fn draw_words(window: &Window, given_fw: &Vec<FallingWord>, type_string: &St
     }
 }
 
-pub fn move_words(given_fw: &mut Vec<FallingWord>) {
-    for fw in given_fw {
+pub fn move_words(game_state: &mut GameState) {
+    for fw in &mut game_state.falling_words {
         fw.ypos += 1;
     }
 }
