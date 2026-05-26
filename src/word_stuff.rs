@@ -65,12 +65,17 @@ pub fn draw_explosions(window: &Window, game_state: &mut GameState) {
         else {
             //explosion is drawn in the same row left & right of word
             if expl_ind > 0 {
-                let ex: i32 = (game_state.explosions[expl_ind].xpos as i32) - 
+                let mut ex: i32 = (game_state.explosions[expl_ind].xpos as i32) - 
                               (game_state.explosions[expl_ind].age as i32);
             
                 if ex > 0 {
                     window.mvprintw(game_state.explosions[expl_ind].ypos as i32, ex as i32, "-");
                 }
+
+                ex = (game_state.explosions[expl_ind].xpos as i32) +
+                     (game_state.explosions[expl_ind].age as i32);
+                window.mvprintw(game_state.explosions[expl_ind].ypos as i32, ex as i32, "-");
+
                 game_state.explosions[expl_ind].age += 1;
             }
         }
