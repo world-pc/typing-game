@@ -54,6 +54,9 @@ pub fn draw_words(window: &Window, game_state: &GameState) {
     }
 }
 
+pub fn draw_explosions(window: &Window, game_state: &GameState) {
+}
+
 pub fn move_words(game_state: &mut GameState) {
     for fw in &mut game_state.falling_words {
         fw.ypos += 1;

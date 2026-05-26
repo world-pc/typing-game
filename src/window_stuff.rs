@@ -59,6 +59,7 @@ pub fn game_screen(window: &Window, game_state: &GameState) {
     window.mvprintw(25, 0, "-".repeat(50));
     window.mvprintw(28, 0, format!("Health: {player_health}"));
     window.mvprintw(28, 20, format!("Score: {score}"));
+    draw_explosions(window, game_state);
     draw_words(window, game_state);
     window.mvprintw(30, 0, &game_state.type_string);
 
