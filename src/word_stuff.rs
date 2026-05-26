@@ -57,6 +57,8 @@ pub fn draw_words(window: &Window, game_state: &GameState) {
 pub fn draw_explosions(window: &Window, game_state: &mut GameState) {
 
     for expl_ind in 0 .. game_state.explosions.len() {
+        if expl_ind >= game_state.explosions.len() {break;} //make this index situation neater
+                                                            //later.
         if game_state.explosions[expl_ind].age > 20 {
             game_state.explosions.remove(expl_ind);
         }
