@@ -59,7 +59,7 @@ pub fn draw_explosions(window: &Window, game_state: &mut GameState) {
     for expl_ind in 0 .. game_state.explosions.len() {
         if expl_ind >= game_state.explosions.len() {break;} //make this index situation neater
                                                             //later.
-        if game_state.explosions[expl_ind].age > 20 {
+        if game_state.explosions[expl_ind].age > 3 {
             game_state.explosions.remove(expl_ind);
         }
         else {
@@ -69,12 +69,12 @@ pub fn draw_explosions(window: &Window, game_state: &mut GameState) {
                               (game_state.explosions[expl_ind].age as i32);
             
                 if ex > 0 {
-                    window.mvprintw(game_state.explosions[expl_ind].ypos as i32, ex as i32, "-");
+                    window.mvprintw(game_state.explosions[expl_ind].ypos as i32, ex as i32, "*");
                 }
 
                 ex = (game_state.explosions[expl_ind].xpos as i32) +
                      (game_state.explosions[expl_ind].age as i32);
-                window.mvprintw(game_state.explosions[expl_ind].ypos as i32, ex as i32, "-");
+                window.mvprintw(game_state.explosions[expl_ind].ypos as i32, ex as i32, "*");
 
                 game_state.explosions[expl_ind].age += 1;
             }
