@@ -35,6 +35,7 @@ fn main() {
 
     start_color();
     init_pair(1, pancurses::COLOR_YELLOW, pancurses::COLOR_BLACK);
+    init_pair(2, pancurses::COLOR_RED, pancurses::COLOR_BLACK);
 
     //stuff to keep track of for the game (score, health, etc.)
     let mut game_state = GameState::new();

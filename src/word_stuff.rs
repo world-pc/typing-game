@@ -63,6 +63,7 @@ pub fn draw_explosions(window: &Window, game_state: &mut GameState) {
             game_state.explosions.remove(expl_ind);
         }
         else {
+            window.attron(pancurses::ColorPair(2));
             //explosion is drawn in the same row left & right of word
             if expl_ind > 0 {
                 let mut ex: i32 = (game_state.explosions[expl_ind].xpos as i32) - 
@@ -78,6 +79,7 @@ pub fn draw_explosions(window: &Window, game_state: &mut GameState) {
 
                 game_state.explosions[expl_ind].age += 1;
             }
+            window.attroff(pancurses::ColorPair(2));
         }
     }
 }
