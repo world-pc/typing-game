@@ -19,7 +19,7 @@ pub struct Explosion {
 }
 
 impl Explosion {
-    pub fn new(given_ypos: u8, given_xpos: u8) {
+    pub fn new(given_ypos: u8, given_xpos: u8) -> Explosion {
         Explosion {ypos: given_ypos, 
                    xpos: given_xpos,
                    age: 0}
@@ -31,7 +31,8 @@ pub struct GameState {
     pub player_score: i32,
     pub type_string: String,
     pub falling_words: Vec<FallingWord>,
-    pub frame_count: u32
+    pub frame_count: u32,
+    pub explosions: Vec<Explosion>
 }
 
 impl GameState {
@@ -40,6 +41,7 @@ impl GameState {
                    player_score: 0,
                    type_string: String::from(""),
                    frame_count: 1,
-                   falling_words: vec![FallingWord::new(2, 0, String::from("begin"))]}
+                   falling_words: vec![FallingWord::new(2, 0, String::from("begin"))],
+                   explosions: Vec::new()}
     }
 }

@@ -1,6 +1,7 @@
 use pancurses::Window;
 use crate::types::{FallingWord, GameState};
-use crate::draw_words;
+use crate::{draw_words};
+use crate::word_stuff::draw_explosions;
 use rand::thread_rng;
 use rand::Rng;
 use rand::seq::SliceRandom;
@@ -47,7 +48,7 @@ pub fn transition(window: &Window) {
     }
 }
 
-pub fn game_screen(window: &Window, game_state: &GameState) {
+pub fn game_screen(window: &Window, game_state: &mut GameState) {
 
     window.clear();
 

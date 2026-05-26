@@ -54,7 +54,20 @@ pub fn draw_words(window: &Window, game_state: &GameState) {
     }
 }
 
-pub fn draw_explosions(window: &Window, game_state: &GameState) {
+pub fn draw_explosions(window: &Window, game_state: &mut GameState) {
+
+    for expl_ind in 0 .. game_state.explosions.len() {
+        if game_state.explosions[expl_ind].age > 20 {
+            game_state.explosions.remove(expl_ind);
+        }
+
+        //explosion is drawn in the same row left & right of word
+        let ex = game_state.explosions[expl_ind].xpos - 
+                 game_state.explosions[expl_ind].age;
+        if ex > 0 {
+            window.mvprintw(game_state.explosions[expl_ind].ypos as i32, ex as i32, "-");
+        }
+    }
 }
 
 pub fn move_words(game_state: &mut GameState) {

@@ -65,7 +65,7 @@ fn main() {
 
         else {
 
-            game_screen(&window, &game_state);
+            game_screen(&window, &mut game_state);
 
             window.refresh();
 
