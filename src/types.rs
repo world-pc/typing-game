@@ -12,6 +12,15 @@ impl FallingWord {
     }
 }
 
+pub struct Explosion {
+    pub xpos: u8,
+    pub ypos: u8,
+    pub age: u8
+}
+
+impl Explosion {
+}
+
 pub struct GameState {
     pub player_health: i32,
     pub player_score: i32,
