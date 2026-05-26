@@ -1,5 +1,5 @@
 use pancurses::{Window, Input};
-use crate::types::{FallingWord, GameState};
+use crate::types::{FallingWord, GameState, Explosion};
 
 pub fn game_input(window: &Window, game_state: &mut GameState) -> i32 {
 
@@ -13,6 +13,11 @@ pub fn game_input(window: &Window, game_state: &mut GameState) -> i32 {
         Some(Input::Character('\n')) => {
             for fw_ind in (0 .. game_state.falling_words.len()).rev() {
                 if game_state.falling_words[fw_ind].word == game_state.type_string {
+
+                    //add an explosion
+                    game_state.explosions.push(Explosion::new(game_state.falling_words[fw_ind].ypos,
+                                                              game_state.falling_words[fw_ind].xpos));
+
                     game_state.falling_words.remove(fw_ind);
                     game_state.player_score += 100;
                 }

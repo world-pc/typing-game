@@ -60,12 +60,17 @@ pub fn draw_explosions(window: &Window, game_state: &mut GameState) {
         if game_state.explosions[expl_ind].age > 20 {
             game_state.explosions.remove(expl_ind);
         }
-
-        //explosion is drawn in the same row left & right of word
-        let ex = game_state.explosions[expl_ind].xpos - 
-                 game_state.explosions[expl_ind].age;
-        if ex > 0 {
-            window.mvprintw(game_state.explosions[expl_ind].ypos as i32, ex as i32, "-");
+        else {
+            //explosion is drawn in the same row left & right of word
+            if expl_ind > 0 {
+                let ex: i32 = (game_state.explosions[expl_ind].xpos as i32) - 
+                              (game_state.explosions[expl_ind].age as i32);
+            
+                if ex > 0 {
+                    window.mvprintw(game_state.explosions[expl_ind].ypos as i32, ex as i32, "-");
+                }
+                game_state.explosions[expl_ind].age += 1;
+            }
         }
     }
 }
