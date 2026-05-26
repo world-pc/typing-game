@@ -19,6 +19,11 @@ pub struct Explosion {
 }
 
 impl Explosion {
+    pub fn new(given_ypos: u8, given_xpos: u8) {
+        Explosion {ypos: given_ypos, 
+                   xpos: given_xpos,
+                   age: 0}
+    }
 }
 
 pub struct GameState {
